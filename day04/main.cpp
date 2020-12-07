@@ -77,12 +77,12 @@ bool policy_hgt(string field) {
 bool policy_hcl(string field) {
 	return (field[0] == '#'
     	&& field.length() == 7
-    	&& field.find_first_not_of("0123456789abcdef", 1) == string::npos);
+    	&& field.find_first_not_of("0123456789abcdefABCDEF", 1) == string::npos);
 }
 
 // ecl (Eye Color) - exactly one of: amb blu brn gry grn hzl oth.
 bool policy_ecl(string field) {
-	vector<string> valid_color = {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
+	vector<string> valid_color {"amb", "blu", "brn", "gry", "grn", "hzl", "oth"};
 	return (find(valid_color.begin(), valid_color.end(), field) != valid_color.end());
 }
 
@@ -105,7 +105,7 @@ bool is_password_correct_policy_2(vector<string> inputs) {
 	next_passport_policy["hcl"] = false;
 	next_passport_policy["ecl"] = false;
 	next_passport_policy["pid"] = false;
-	next_passport_policy["cid"] = false;
+	next_passport_policy["cid"] = true;
 
 	field_policy["byr"] = &policy_byr;
 	field_policy["iyr"] = &policy_iyr;
@@ -132,10 +132,6 @@ bool is_password_correct_policy_2(vector<string> inputs) {
 		&& next_passport_policy["hcl"] 
 		&& next_passport_policy["ecl"]
 		&& next_passport_policy["pid"]) {
-		// for (vector<string>::iterator it = inputs.begin(); it != inputs.end(); ++it) {
-		// 	cout << *it << endl;
-		// }
-		// cout << endl;
 			return true;
 	}
 	return false;
@@ -172,6 +168,5 @@ int main(int argc, char* argv[]) {
 	
 	result_part_2 = count_valid_password_policy(inputs, is_password_correct_policy_2);
 	cout << result_part_2 << endl;
-	
 	return 0;
 } 
